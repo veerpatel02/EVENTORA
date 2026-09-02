@@ -8,6 +8,7 @@ import authRouter from "./routes/auth.router.js"
 
 
 const app = express();
+app.use(express.json()); //json data pass
 app.use(cors());
 const connectDb = async () => {
   try {
@@ -17,7 +18,7 @@ const connectDb = async () => {
     console.log(`Db error ${error}`)
   }
 }
-app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/auth", authRouter);   // 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   connectDb();
