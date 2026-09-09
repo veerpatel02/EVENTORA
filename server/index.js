@@ -4,9 +4,9 @@ dotenv.config();
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
-import authRouter from "./routes/auth.router.js"
-import eventsRouter from "./routes/events.router.js"
-import bookingRouter from "./routes/booking.router.js"
+import authRouter from "./routes/auth.routes.js"
+import eventsRouter from "./routes/events.routes.js"
+import bookingRouter from "./routes/booking.routes.js"
 
 
 const app = express();
