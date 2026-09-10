@@ -1,6 +1,6 @@
 import Event from "../models/event.model.js";
 
-export const getAllEvent = async (req,res)=>{
+export const getAllEvents = async (req,res)=>{
     try {
 
         const filters = {};
@@ -81,4 +81,7 @@ export const updateEvent = async(req,res)=>{
             res.status(500).json({error: error.message});
         }
     };
+
+
+    
 

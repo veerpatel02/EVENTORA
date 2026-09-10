@@ -1,17 +1,17 @@
 import express from "express";
-import router from "router";
-import {protect,admin} from "./middleware/auth.js"
-import {getAllEvents,getEventById,createEvent,updateEvent,deleteEvent} from "../controllers/eventController.js"
 
+import { protect, admin } from "../middleware/auth.js"
+import { getAllEvents, getEventById, createEvent, updateEvent, deleteEvent } from "../controllers/eventController.js"
+const router = express.Router();
 
 
 //Get All Event
 
-router.get('/',getAllEvents);
+router.get('/', getAllEvents);
 
 //Get Event by Id
 
-router.get('/:id',getEventById);
+router.get('/:id', getEventById);
 
 // Create Event (Admin Only)
 
