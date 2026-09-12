@@ -5,7 +5,7 @@ const bookingSchema =  new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        requierd: true
+        required: true
     },
     eventId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,7 +23,7 @@ const bookingSchema =  new mongoose.Schema({
         default: 'non_paid'
     },
     amount: {
-        typr: Number,
+        type: Number,
         required: true
     }
 }, {timestamps: true});
