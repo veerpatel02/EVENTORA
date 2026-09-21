@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import Home from './pages/Home.jsx'
 
 function App() {
-  
-    return (
-      <>
-      hello 
-      </>
-    )
+
+  return (
+    <>
+      <Home />
+    </>
+  )
 }
 
 export default App

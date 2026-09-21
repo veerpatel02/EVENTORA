@@ -3,10 +3,10 @@ export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children })=>{
      const [user, setUser] = React.useState(null);
-     const [loding, setLoding] = React.useState(true);
+     const [loading, setLoding] = React.useState(true);
 
      React.useEffect(()=>{
-        const storedUser = localStorage.grtItem("user");
+        const storedUser = localStorage.getItem("user");
         if(storedUser) {
             setUser(JSON.parse(storedUser));
         }
