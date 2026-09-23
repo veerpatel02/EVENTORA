@@ -1,16 +1,21 @@
-import { useState } from 'react'
-import Home from './pages/Home.jsx'
-import Navbar from './components/Navbar.jsx'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
 
-function App() {
+const router = createBrowserRouter([
+{
+  path:"/",
+  element: <Home />
+  
+},
+{
+  path:"/register",
+  element: <Register />
+}
+])
 
-  return (
-    <>
-      <Navbar />
-      <Home />
-
-    </>
-  )
+const App = () =>{
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;

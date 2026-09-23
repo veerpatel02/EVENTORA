@@ -164,6 +164,7 @@ import {
     FaShieldAlt,
 } from 'react-icons/fa';
 import api from '../utils/axios.js';
+import Navbar from '../components/Navbar.jsx';
 
 const Home = () => {
     const [events, setEvents] = useState([]);
@@ -224,7 +225,8 @@ const Home = () => {
         return Math.min(100, Math.max(0, percentage));
     };
 
-    return (
+    return (<>
+        <Navbar /> 
         <div className="flex flex-col min-h-screen">
 
             {/* Hero Section */}
@@ -450,16 +452,16 @@ const Home = () => {
                                             <span>
                                                 {event.date
                                                     ? new Date(
-                                                          event.date
-                                                      ).toLocaleDateString(
-                                                          undefined,
-                                                          {
-                                                              weekday: 'long',
-                                                              year: 'numeric',
-                                                              month: 'long',
-                                                              day: 'numeric',
-                                                          }
-                                                      )
+                                                        event.date
+                                                    ).toLocaleDateString(
+                                                        undefined,
+                                                        {
+                                                            weekday: 'long',
+                                                            year: 'numeric',
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                        }
+                                                    )
                                                     : 'Date not available'}
                                             </span>
                                         </div>
@@ -537,6 +539,7 @@ const Home = () => {
 
             </footer>
         </div>
+    </>
     );
 };
 

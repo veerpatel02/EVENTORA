@@ -22,10 +22,10 @@ import { AuthProvider } from './context/AuthContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    {/* <BrowserRouter> */}
       <AuthProvider>
         <App />
       </AuthProvider>
-    </BrowserRouter>
+    {/* </BrowserRouter> */}
   </StrictMode>
 );
