@@ -11,7 +11,7 @@ const generateToken = (id, role) => {
 export const registerUser = async (req, res) => {
     console.log('1.11');
     console.log("start")
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     let userExists = await User.findOne({ email });
     if (userExists) {
         return res.status(400).json({ error: 'User already exists' });
@@ -30,17 +30,18 @@ export const registerUser = async (req, res) => {
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         console.log(`otp for ${email}: ${otp}`);
-
+        console.log("90")
         await OTP.create({ email, otp, action: 'account_verification' });
-
+        console.log("91")
         await sendOtpEmail(email, otp, 'account_verification');
-        res.status(201).json({
+        console.log("92")
+        return res.status(201).json({
             message: 'User registered successfully. Please chack your email for otp to verify your account.',
             email: user.email
         });
 
-        console.log(user)
-        return res.status(201).json({ message: 'User register successfully' })
+        // console.log(user)
+        // return res.status(201).json({ message: 'User register successfully' });
     } catch (error) {
         console.log(error)
     }
@@ -51,7 +52,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await User.findone({ email });
+    const user = await User.findOne({ email });
     if (!user) {
         return res.status(400).json({ error: 'Invalid cradentials, Please Sign Up first' });
     }
@@ -64,7 +65,7 @@ export const loginUser = async (req, res) => {
 
 
     if (!user.isVerified && user.role === 'user') {
-        const otp = Math.floor(100000 + Math.random * 900000).toString();
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
         await OTP.deleteMany({ email, action: 'account_verification' });
         await OTP.create({ email, otp, action: 'account_verification' });
         await sendOtpEmail({ email, otp: 'account_verification' });
