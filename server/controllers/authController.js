@@ -9,6 +9,7 @@ const generateToken = (id, role) => {
 }
 
 export const registerUser = async (req, res) => {
+    console.log('1.11');
     console.log("start")
     const { name, email, password } = req.body;
     let userExists = await User.findOne({ email });
@@ -24,7 +25,7 @@ export const registerUser = async (req, res) => {
             name,
             email,
             password,
-            roler,
+            role,
         });
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();

@@ -1,4 +1,6 @@
 import React from "react";
+import api from "../utils/axios.js";
+
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children })=>{
@@ -28,7 +30,9 @@ export const AuthProvider = ({ children })=>{
 
      const register = async(name, email, password)=>{
       try {
+        console.log('1.1');
           const {data} = await api.post('/auth/register', {name, email, password});
+          console.log('2.1')
           setUser(data);
           return data;
       } catch (error) {

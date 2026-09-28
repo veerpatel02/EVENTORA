@@ -21,7 +21,9 @@ const Register = () => {
         setError('');
         try {
             if(!showOTP){
+                console.log('1');
                 await register(name,email,password);
+                console.log('2');
                 setShowOTP(true);
                 setError('');
             }
@@ -30,7 +32,7 @@ const Register = () => {
                 navigate('/dashboard');
             }
         } catch (error) {
-            setError(error);
+            setError(error.message || 'Something went wrong');
         } finally{
             setLoading(false);
         }
