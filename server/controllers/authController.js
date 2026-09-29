@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
         const user = await User.create({
             name,
             email,
-            password,
+            password: hashedPassword,
             role,
         });
 
@@ -50,7 +50,9 @@ export const registerUser = async (req, res) => {
 //Login User
 
 export const loginUser = async (req, res) => {
+    console.log("1")
     const { email, password } = req.body;
+    console.log("2")
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -68,7 +70,7 @@ export const loginUser = async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         await OTP.deleteMany({ email, action: 'account_verification' });
         await OTP.create({ email, otp, action: 'account_verification' });
-        await sendOtpEmail({ email, otp: 'account_verification' });
+        await sendOtpEmail({ email, otp, 'account_verification' });
         return res.status(400).json({
             error: 'Account is not verified. A new OTP has been sent to your email'
         });
@@ -79,7 +81,7 @@ export const loginUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: useReducer.role,
+        role: user.role,
         token: generateToken(user._id, user.role)
     })
 };
@@ -87,8 +89,8 @@ export const loginUser = async (req, res) => {
 // Verify OTP
 
 export const verifyOtp = async (req, res) => {
-    const { email, otp } = res.body;
-    const otpRecord = await OTP > findOne({ email, otp, action: 'account_verification' });
+    const { email, otp } = req.body;
+    const otpRecord = await OTP.findOne({ email, otp, action: 'account_verification' });
 
     if (!otpRecord) {
         return res.status(400).json({ error: 'Invalid or expired or OTP' });

@@ -20,9 +20,10 @@ const connectDb = async () => {
     console.log(`Db error ${error}`)
   }
 }
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/events", eventsRouter);
-app.use("/api/v1/booking", bookingRouter);   
+app.use("/api/v1/booking", bookingRouter);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   connectDb();

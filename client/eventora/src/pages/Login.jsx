@@ -1,44 +1,45 @@
 import React, { useState, useContext } from 'react';
-import {AuthContext} from '../context/AuthContext';
-import {useNavigate,Link} from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
-    const [otp,setOtp] = useState('');
-    const [showOTP,setShowOTP] = useState(false);
-    const [error,setError] = useState('');
-    const [loading,setLoading] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [otp, setOtp] = useState('');
+    const [showOTP, setShowOTP] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    // console.log(error)
+    const { login, verifyOTP } = useContext(AuthContext);
 
-    const {login,verifyOTP} = useContext(AuthContext);
     const navigate = useNavigate();
-     
+
     const handleSubmit = async (e) => {
-         e.preventDefault();
-         setLoading(true);
-         setError('');
-         try {
-            if (!showOTP){
-                    const data = await loading(email,password);
-                    if (data.role === 'admin') navigate('admin');
-                    else navigate('/dashboard');
-                } else{
-                    const data = await verifyOTP (email,otp);
-                    if(data.role === 'admin') navigate('/admin');
-                    else navigate('dashboard');
-                }
-         } catch (error) {
-            if(error.needsVerification) {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        try {
+            if (!showOTP) {
+                const data = await login(email, password);
+                if (data.role === 'admin') navigate('admin');
+                else navigate('/dashboard');
+            } else {
+                const data = await verifyOTP(email, otp);
+                if (data.role === 'admin') navigate('/admin');
+                else navigate('dashboard');
+            }
+        } catch (error) {
+            if (error.needsVerification) {
                 setShowOTP(true);
                 setError('Account not verified. A new OTP has been sent to your email.');
-            }else {
+            } else {
                 setError(error.message || error);
             }
-         } finally{
+        } finally {
             setLoading(false);
-         }
+        }
     }
-  return (
+    return (
         <div className="max-w-md mx-auto mt-20 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
             <div className="text-center mb-8">
                 <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back</h2>
@@ -98,7 +99,7 @@ const Login = () => {
                 Don't have an account? <Link to="/register" className="text-gray-900 font-bold hover:underline">Sign up</Link>
             </p>
         </div>
-  )
+    )
 }
 
 export default Login
