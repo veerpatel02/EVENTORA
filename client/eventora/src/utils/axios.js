@@ -1,20 +1,61 @@
-import axios from 'axios';
+// import axios from 'axios';
+
+// const api = axios.create({
+//   baseURL: 'http://localhost:5000/api/v1/auth',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('token');
+
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+
+//   return config;
+// });
+
+// export default api;
+
+
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api/v1/auth',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+    baseURL: "http://localhost:5000/api/v1/auth",
+    headers: {
+        "Content-Type": "application/json",
+    },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem("token");
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
 
-  return config;
-});
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        console.error(
+            "API Error:",
+            error.response?.data || error.message
+        );
+
+        return Promise.reject(error);
+    }
+);
 
 export default api;
