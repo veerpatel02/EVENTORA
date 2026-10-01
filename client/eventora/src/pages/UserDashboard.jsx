@@ -2,13 +2,13 @@ import React, {useState,useContext,useEffect} from 'react';
 import {AuthContext} from '../context/AuthContext';
 import api from '../utils/axios';
 import {Link,useNavigate} from 'react-router-dom';
-import {FaTicketAlt,FATimeCircle} from 'react-icons/fa';
+import {FaTicketAlt,FaTimesCircle} from 'react-icons/fa';
 
 const UserDashboard = () => {
     const {user} = useContext(AuthContext);
     const navigate = useNavigate();
     const [bookings,setBookings] = useState([]);
-    const [koading,setLoading] = useState(true);
+    const [loading,setLoading] = useState(true);
 
     useEffect(()=>{
         if(!user){
@@ -41,7 +41,7 @@ const UserDashboard = () => {
     };
 
     if (loading) return <div className="text-center py-20 text-xl font-semibold">Loading dashboard...</div>;
-    }
+    
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -127,7 +127,9 @@ const UserDashboard = () => {
                 </div>
             )}
         </div>
+
   );
+
 };
 
 export default UserDashboard;
