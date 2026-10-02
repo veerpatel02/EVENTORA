@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import EventDetail from "./pages/EventDetail";
 import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const router = createBrowserRouter([
 {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
 {
   path:"/dashboard",
   element: <UserDashboard />
+},
+{
+  path:"/admindashboard",
+  element: <AdminDashboard />
 }
 ])
 
