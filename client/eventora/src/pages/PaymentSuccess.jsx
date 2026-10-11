@@ -1,10 +1,9 @@
-import React from 'react'
-import {link} from 'react-router-dom';
-import {faCheckcircle} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaCheckCircle } from 'react-icons/fa';
 
-const PaymentSucess = () => {
-  return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center p-4">
+const PaymentSuccess = () => {
+    return (
+        <div className="min-h-[70vh] flex flex-col items-center justify-center p-4">
             <div className="bg-white p-10 rounded-3xl shadow-2xl max-w-md w-full text-center border-t-8 border-green-500 transform transition-all hover:-translate-y-1">
                 <FaCheckCircle className="text-green-500 text-7xl mx-auto mb-6 drop-shadow-sm" />
                 <h1 className="text-4xl font-black text-gray-900 mb-4">Booking Confirmed!</h1>
@@ -23,5 +22,5 @@ const PaymentSucess = () => {
 };
 
 
-export default PaymentSucess;
+export default PaymentSuccess;
 

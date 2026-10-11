@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import EventDetail from "./pages/EventDetail";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const router = createBrowserRouter([
 {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
 {
   path:"/admindashboard",
   element: <AdminDashboard />
+},
+{
+  path:"/paymentsuccess",
+  element: <PaymentSuccess />
 }
 ])
 

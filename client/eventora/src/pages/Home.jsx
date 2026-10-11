@@ -8,7 +8,7 @@ import {
     FaTicketAlt,
     FaShieldAlt,
 } from 'react-icons/fa';
-import api from '../utils/axios.js';
+import api from "../utils/axios.js";
 import Navbar from '../components/Navbar.jsx';
 
 const Home = () => {
@@ -26,11 +26,14 @@ const Home = () => {
 
             try {
                 const { data } = await api.get(
-                    `/events?search=${encodeURIComponent(search.trim())}`,
-                    {
-                        signal: controller.signal,
-                    }
-                );
+  "http://localhost:5000/api/v1/events",
+  {
+    params: {
+      search: search.trim(),
+    },
+    signal: controller.signal,
+  }
+);
 
                 // Make sure we always store an array
                 setEvents(Array.isArray(data) ? data : []);
@@ -44,7 +47,7 @@ const Home = () => {
                     return;
                 }
 
-                console.error('Error fetching events:', err);
+                console.error('Error fetching events:',err);
                 setError('Unable to load events. Please try again.');
                 setEvents([]);
             } finally {
