@@ -23,6 +23,9 @@ const UserDashboard = () => {
             const { data } = await api.get(
                 "http://localhost:5000/api/v1/bookings/my"
             );
+            setBookings(
+                Array.isArray(data) ? data : data.bookings || []
+            );
         } catch (error) {
             console.error('Error fetching bookings', error);
         } finally {
@@ -36,6 +39,7 @@ const UserDashboard = () => {
                 await api.delete(
                     `http://localhost:5000/api/v1/bookings/${id}`
                 );
+                await fetchBookings();
             } catch (error) {
                 alert(error.response?.data?.message || 'Error cancelling booking');
             }
