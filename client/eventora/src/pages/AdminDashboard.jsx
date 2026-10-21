@@ -1,6 +1,6 @@
 import React, {useState,useEffect,useContext} from 'react';
 import {AuthContext} from '../context/AuthContext';
-import aoi from '../utils/axios';
+import api from '../utils/axios';
 import {useNavigate} from 'react-router-dom';
 
 const AdminDashboard = () => {

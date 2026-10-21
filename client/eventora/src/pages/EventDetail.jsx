@@ -16,18 +16,35 @@ const EventDetail = () => {
     const [error,setError] = useState('');
     const [successMsg,setSuccessMsg] = useState('');
 
-    useEffect ( ()=>{
-        const fatchEvent = async () =>{
-            try {
-                const {data} = await api.get(`/events/${id}`);
-                setEvent(data);
-            } catch (error) {
-                setError('Failed to load event details.');
-            }finally{
-                setLoading(false);
-            }
-        };
-    }, [id]); 
+    // useEffect ( ()=>{
+    //     const fatchEvent = async () =>{
+    //         try {
+    //             const {data} = await api.get(`/events/${id}`);
+    //             setEvent(data);
+    //         } catch (error) {
+    //             setError('Failed to load event details.');
+    //         }finally{
+    //             setLoading(false);
+    //         }
+    //     };
+    // }, [id]); 
+
+    useEffect(() => {
+    const fatchEvent = async () => {
+        try {
+            const { data } = await api.get(
+                `http://localhost:5000/api/v1/events/${id}`
+            );
+            setEvent(data);
+        } catch (error) {
+            setError("Failed to load event details.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fatchEvent(); // Important: call the function
+}, [id]);
 
     const handleBooking = async () => {
         if(!user){
