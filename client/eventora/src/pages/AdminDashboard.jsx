@@ -300,7 +300,7 @@ const AdminDashboard = () => {
             console.error(
                 "Error fetching events:",
                 eventsResult.reason?.response?.data ||
-                    eventsResult.reason?.message
+                eventsResult.reason?.message
             );
         }
 
@@ -316,7 +316,7 @@ const AdminDashboard = () => {
             console.error(
                 "Error fetching bookings:",
                 bookingsResult.reason?.response?.data ||
-                    bookingsResult.reason?.message
+                bookingsResult.reason?.message
             );
         }
 
@@ -347,24 +347,37 @@ const AdminDashboard = () => {
 
         const totalSeats = Number(formData.totalSeats);
         const ticketPrice = Number(formData.ticketPrice);
+        const imageUrl = formData.image.trim();
 
-        if (
-            !Number.isFinite(totalSeats) ||
-            totalSeats <= 0 ||
-            !Number.isFinite(ticketPrice) ||
-            ticketPrice < 0
-        ) {
-            alert("Enter valid seats and a non-negative ticket price.");
+        if (!Number.isFinite(totalSeats) || totalSeats <= 0) {
+            alert("Total seats must be greater than zero.");
+            return;
+        }
+
+        if (!Number.isFinite(ticketPrice) || ticketPrice < 0) {
+            alert("Ticket price cannot be negative.");
+            return;
+        }
+
+        if (!imageUrl) {
+            alert("Please enter an event image URL.");
             return;
         }
 
         try {
             await api.post(`${API_BASE}/events`, {
-                ...formData,
+                title: formData.title.trim(),
+                description: formData.description.trim(),
+                date: formData.date,
+                location: formData.location.trim(),
+                category: formData.category.trim(),
                 totalSeats,
                 availableSeats: totalSeats,
                 ticketPrice,
+                imageUrl,
             });
+
+            alert("Event created successfully!");
 
             setShowEventForm(false);
 
@@ -381,13 +394,64 @@ const AdminDashboard = () => {
 
             await fetchData();
         } catch (error) {
+            console.error(
+                "Create event error:",
+                error.response?.data || error.message
+            );
+
             alert(
+                error.response?.data?.error ||
                 error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    "Error creating event"
+                "Error creating event"
             );
         }
     };
+    // const handleCreateEvent = async (e) => {
+    //     e.preventDefault();
+
+    //     const totalSeats = Number(formData.totalSeats);
+    //     const ticketPrice = Number(formData.ticketPrice);
+
+    //     if (
+    //         !Number.isFinite(totalSeats) ||
+    //         totalSeats <= 0 ||
+    //         !Number.isFinite(ticketPrice) ||
+    //         ticketPrice < 0
+    //     ) {
+    //         alert("Enter valid seats and a non-negative ticket price.");
+    //         return;
+    //     }
+
+    //     try {
+    //         await api.post(`${API_BASE}/events`, {
+    //             ...formData,
+    //             totalSeats,
+    //             availableSeats: totalSeats,
+    //             ticketPrice,
+    //         });
+
+    //         setShowEventForm(false);
+
+    //         setFormData({
+    //             title: "",
+    //             description: "",
+    //             date: "",
+    //             location: "",
+    //             category: "",
+    //             totalSeats: "",
+    //             ticketPrice: "",
+    //             image: "",
+    //         });
+
+    //         await fetchData();
+    //     } catch (error) {
+    //         alert(
+    //             error.response?.data?.message ||
+    //                 error.response?.data?.error ||
+    //                 "Error creating event"
+    //         );
+    //     }
+    // };
 
     // Delete an event
     const handleDeleteEvent = async (id) => {
@@ -405,8 +469,8 @@ const AdminDashboard = () => {
         } catch (error) {
             alert(
                 error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    "Error deleting event"
+                error.response?.data?.error ||
+                "Error deleting event"
             );
         }
     };
@@ -423,8 +487,8 @@ const AdminDashboard = () => {
         } catch (error) {
             alert(
                 error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    "Error confirming booking"
+                error.response?.data?.error ||
+                "Error confirming booking"
             );
         }
     };
@@ -445,8 +509,8 @@ const AdminDashboard = () => {
         } catch (error) {
             alert(
                 error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    "Error cancelling booking"
+                error.response?.data?.error ||
+                "Error cancelling booking"
             );
         }
     };
@@ -649,8 +713,19 @@ const AdminDashboard = () => {
                         />
 
                         <input
+                            // type="url"
+                            // placeholder="Direct Image URL (optional)"
+                            // className="border px-4 py-3 rounded-lg md:col-span-2"
+                            // value={formData.image}
+                            // onChange={(e) =>
+                            //     setFormData({
+                            //         ...formData,
+                            //         image: e.target.value,
+                            //     })
+                            // }
+                            required
                             type="url"
-                            placeholder="Direct Image URL (optional)"
+                            placeholder="Direct image URL"
                             className="border px-4 py-3 rounded-lg md:col-span-2"
                             value={formData.image}
                             onChange={(e) =>
@@ -713,8 +788,8 @@ const AdminDashboard = () => {
                                             <p className="text-sm text-gray-500 mt-1">
                                                 {event.date
                                                     ? new Date(
-                                                          event.date
-                                                      ).toLocaleDateString()
+                                                        event.date
+                                                    ).toLocaleDateString()
                                                     : "Date unavailable"}
                                             </p>
 
@@ -800,8 +875,8 @@ const AdminDashboard = () => {
                                                 <strong>Booked:</strong>{" "}
                                                 {booking.bookedAt
                                                     ? new Date(
-                                                          booking.bookedAt
-                                                      ).toLocaleString()
+                                                        booking.bookedAt
+                                                    ).toLocaleString()
                                                     : "Unavailable"}
                                             </p>
                                         </div>

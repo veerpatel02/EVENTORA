@@ -22,18 +22,39 @@ api.interceptors.request.use(
     }
 );
 
+// api.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         console.error("API Error:", {
+//             status: error.response?.status,
+//             data: error.response?.data,
+//             message: error.message,
+//         });
+
+//         return Promise.reject(error);
+//     }
+// );
 api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
+    (response) => response,
     (error) => {
+        console.error("API status:", error.response?.status);
+
         console.error(
-            "API Error:",
-            error.response?.data || error.message
+            "API response:",
+            JSON.stringify(
+                error.response?.data ?? error.message,
+                null,
+                2
+            )
+        );
+
+        console.error(
+            "API request:",
+            error.config?.method?.toUpperCase(),
+            error.config?.url
         );
 
         return Promise.reject(error);
     }
 );
-
 export default api;

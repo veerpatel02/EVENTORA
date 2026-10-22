@@ -59,19 +59,8 @@ export const getEventById = async (req, res) => {
 
 // Create Event
 export const createEvent = async (req, res) => {
-    const {
-        title,
-        description,
-        date,
-        location,
-        category,
-        totalSeats,
-        ticketPrice,
-        imageUrl,
-    } = req.body;
-
     try {
-        const event = await Event.create({
+        const {
             title,
             description,
             date,
@@ -80,16 +69,81 @@ export const createEvent = async (req, res) => {
             totalSeats,
             ticketPrice,
             imageUrl,
+            image,
+        } = req.body;
+
+        const seats = Number(totalSeats);
+        const eventImage = String(imageUrl ?? image ?? "").trim();
+
+        if (!eventImage) {
+            return res.status(400).json({
+                message: "An event image URL is required.",
+            });
+        }
+
+        if (!Number.isFinite(seats) || seats <= 0) {
+            return res.status(400).json({
+                message: "Total seats must be greater than zero.",
+            });
+        }
+
+        const event = await Event.create({
+            title,
+            description,
+            date,
+            location,
+            category,
+            totalSeats: seats,
+            availableSeats: seats,
+            ticketPrice: Number(ticketPrice),
+            imageUrl: eventImage,
+            createdBy: req.user._id,
         });
 
-        res.status(201).json(event);
-
+        return res.status(201).json({
+            message: "Event created successfully.",
+            event,
+        });
     } catch (error) {
-        res.status(400).json({
-            error: error.message,
+        console.error("Create event error:", error);
+
+        return res.status(400).json({
+            error: error.message || "Failed to create event.",
         });
     }
 };
+// export const createEvent = async (req, res) => {
+//     const {
+//         title,
+//         description,
+//         date,
+//         location,
+//         category,
+//         totalSeats,
+//         ticketPrice,
+//         imageUrl,
+//     } = req.body;
+
+//     try {
+//         const event = await Event.create({
+//             title,
+//             description,
+//             date,
+//             location,
+//             category,
+//             totalSeats,
+//             ticketPrice,
+//             imageUrl,
+//         });
+
+//         res.status(201).json(event);
+
+//     } catch (error) {
+//         res.status(400).json({
+//             error: error.message,
+//         });
+//     }
+// };
 
 
 // Update Event
