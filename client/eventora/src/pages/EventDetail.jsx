@@ -1,20 +1,20 @@
-import React, {useState,useEffect,useContext} from 'react';
-import { useParams,useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/axios';
-import {AuthContext}from '../context/AuthContext';
-import {FaCalendarAlt,FaMapMarkerAlt,FaChair,FaMoneyBillWave} from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
+import { FaCalendarAlt, FaMapMarkerAlt, FaChair, FaMoneyBillWave } from 'react-icons/fa';
 
 const EventDetail = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
-    const {user} = useContext(AuthContext);
-    const [event,setEvent] = useState(null);
-    const [loading,setLoading] = useState(true);
-    const [bookingLoading,setBookingLoading] = useState(false);
-    const [otp,setOtp] = useState('');
-    const [showOTP,setShowOTP] = useState(false);
-    const [error,setError] = useState('');
-    const [successMsg,setSuccessMsg] = useState('');
+    const { user } = useContext(AuthContext);
+    const [event, setEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [bookingLoading, setBookingLoading] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [showOTP, setShowOTP] = useState(false);
+    const [error, setError] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
 
     // useEffect ( ()=>{
     //     const fatchEvent = async () =>{
@@ -30,56 +30,123 @@ const EventDetail = () => {
     // }, [id]); 
 
     useEffect(() => {
-    const fatchEvent = async () => {
-        try {
-            const { data } = await api.get(
-                `http://localhost:5000/api/v1/events/${id}`
-            );
-            setEvent(data);
-        } catch (error) {
-            setError("Failed to load event details.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    fatchEvent(); // Important: call the function
-}, [id]);
-
-    const handleBooking = async () => {
-        if(!user){
-            navigate('/login');4
-            return;
-        }
-        setBookingLoading(true);
-        setError('');
-        setSuccessMsg('');
-
-        try {
-            if (!showOTP){
-                await api.post('/booking/sent-otp');
-                setShowOTP(true);
-                setSuccessMsg('OTP sent to your email. Please verify to confirm booking');
-            }else{
-                await api.post('/booking',{eventId: event._id,otp});
-                setSuccessMsg('Bookig requested! Awaiting admin confirmation.');
-                setShowOTP(false);
-                setEVent({...event, availabseats: event.availabseats - 1});
+        const fatchEvent = async () => {
+            try {
+                const { data } = await api.get(
+                    `http://localhost:5000/api/v1/events/${id}`
+                );
+                setEvent(data);
+            } catch (error) {
+                setError("Failed to load event details.");
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            setError(error.response?.data?.message || 'Booking failed');
-        } finally{
-            setBookingLoading(false);
-        }
-    };
+        };
 
-     if (loading) return <div className="text-center py-20 text-xl font-semibold">Loading...</div>;
+        fatchEvent(); // Important: call the function
+    }, [id]);
+
+    // const handleBooking = async () => {
+    //     if (!user) {
+    //         navigate('/login');
+    //         return;
+    //     }
+    //     if (!event?._id) {
+    //         setError("Event details are not available.");
+    //         return;
+    //     }
+    //     setBookingLoading(true);
+    //     setError('');
+    //     setSuccessMsg('');
+
+    //     try {
+    //         if (!showOTP) {
+    //             await api.post('/booking/sent-otp');
+    //             setShowOTP(true);
+    //             setSuccessMsg('OTP sent to your email. Please verify to confirm booking');
+    //         } else {
+    //             await api.post('/booking', { eventId: event._id, otp });
+    //             setSuccessMsg('Bookig requested! Awaiting admin confirmation.');
+    //             setShowOTP(false);
+    //             setEVent({ ...event, availabseats: event.availabseats - 1 });
+    //         }
+    //     } catch (error) {
+    //         setError(error.response?.data?.message || 'Booking failed');
+    //     } finally {
+    //         setBookingLoading(false);
+    //     }
+    // };
+    const handleBooking = async () => {
+    if (!user) {
+        navigate("/login");
+        return;
+    }
+
+    if (!event?._id) {
+        setError("Event details are not available.");
+        return;
+    }
+
+    setBookingLoading(true);
+    setError("");
+    setSuccessMsg("");
+
+    try {
+        if (!showOTP) {
+            // Request a booking OTP
+            await api.post(
+                "http://localhost:5000/api/v1/bookings/send-otp"
+            );
+
+            setShowOTP(true);
+            setSuccessMsg(
+                "OTP sent to your email. Enter it to confirm your booking."
+            );
+        } else {
+            if (!/^\d{6}$/.test(otp)) {
+                setError("Please enter a valid 6-digit OTP.");
+                return;
+            }
+
+            // Submit the booking request with the OTP
+            await api.post(
+                "http://localhost:5000/api/v1/bookings",
+                {
+                    eventId: event._id,
+                    otp,
+                }
+            );
+
+            setSuccessMsg(
+                "Booking requested successfully! Awaiting admin confirmation."
+            );
+
+            setShowOTP(false);
+            setOtp("");
+        }
+    } catch (error) {
+        console.error(
+            "Booking error:",
+            error.response?.data || error.message
+        );
+
+        setError(
+            error.response?.data?.message ||
+            error.response?.data?.error ||
+            "Booking failed. Please try again."
+        );
+    } finally {
+        setBookingLoading(false);
+    }
+};
+
+    if (loading) return <div className="text-center py-20 text-xl font-semibold">Loading...</div>;
     if (error && !event) return <div className="text-center py-20 text-xl text-red-500">{error || 'Event not found'}</div>;
 
     const isSoldOut = event.availableSeats <= 0;
 
-  return (
-     <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden mt-8">
+    return (
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden mt-8">
             {event.image ? (
                 <img src={event.image} alt={event.title} className="w-full h-80 object-cover" />
             ) : (
@@ -176,7 +243,7 @@ const EventDetail = () => {
                 </div>
             </div>
         </div>
-  )
+    )
 }
 
 export default EventDetail
