@@ -26,14 +26,14 @@ const Home = () => {
 
             try {
                 const { data } = await api.get(
-  "http://localhost:5000/api/v1/events",
-  {
-    params: {
-      search: search.trim(),
-    },
-    signal: controller.signal,
-  }
-);
+                    "http://localhost:5000/api/v1/events",
+                    {
+                        params: {
+                            search: search.trim(),
+                        },
+                        signal: controller.signal,
+                    }
+                );
 
                 // Make sure we always store an array
                 setEvents(Array.isArray(data) ? data : []);
@@ -47,7 +47,7 @@ const Home = () => {
                     return;
                 }
 
-                console.error('Error fetching events:',err);
+                console.error('Error fetching events:', err);
                 setError('Unable to load events. Please try again.');
                 setEvents([]);
             } finally {
@@ -74,7 +74,7 @@ const Home = () => {
     };
 
     return (<>
-        <Navbar /> 
+        <Navbar />
         <div className="flex flex-col min-h-screen">
 
             {/* Hero Section */}
@@ -248,21 +248,29 @@ const Home = () => {
                                 {/* Event Image */}
                                 <div className="h-48 bg-gray-200 overflow-hidden relative">
 
-                                    {event.image ? (
+                                    {(event.imageUrl || event.image) ? (
                                         <img
-                                            src={event.image}
-                                            alt={event.title || 'Event'}
+                                            src={event.imageUrl || event.image}
+                                            alt={event.title || "Event"}
                                             className="w-full h-full object-cover"
                                             onError={(e) => {
-                                                e.currentTarget.style.display =
-                                                    'none';
+                                                e.currentTarget.style.display = "none";
+                                                const fallback = e.currentTarget.nextElementSibling;
+                                                if (fallback) {
+                                                    fallback.style.display = "flex";
+                                                }
                                             }}
                                         />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-600 font-bold text-2xl">
-                                            {event.category || 'Event'}
-                                        </div>
-                                    )}
+                                    ) : null}
+
+                                    <div
+                                        style={{
+                                            display: event.imageUrl || event.image ? "none" : "flex",
+                                        }}
+                                        className="w-full h-full items-center justify-center bg-gray-200 text-gray-600 font-bold text-2xl"
+                                    >
+                                        {event.category || "Event"}
+                                    </div>
 
                                     {/* Price */}
                                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">
