@@ -476,22 +476,46 @@ const AdminDashboard = () => {
     };
 
     // Confirm a booking
-    const handleConfirmBooking = async (id, paymentStatus) => {
-        try {
-            await api.put(
-                `${API_BASE}/bookings/${id}/confirm`,
-                { paymentStatus }
-            );
+    // const handleConfirmBooking = async (id, paymentStatus) => {
+    //     try {
+    //         await api.put(
+    //             `${API_BASE}/bookings/${id}/confirm`,
+    //             { paymentStatus }
+    //         );
 
+    //         await fetchData();
+    //     } catch (error) {
+    //         alert(
+    //             error.response?.data?.message ||
+    //             error.response?.data?.error ||
+    //             "Error confirming booking"
+    //         );
+    //     }
+    // };
+    const handleConfirmBooking = async (id, paymentStatus) => {
+    try {
+        await api.put(
+            `${API_BASE}/bookings/${id}/confirm`,
+            { paymentStatus }
+        );
+
+        alert("Booking confirmed successfully!");
+        await fetchData();
+    } catch (error) {
+        const message =
+            error.response?.data?.message ||
+            error.response?.data?.error ||
+            "Error confirming booking";
+
+        if (message.toLowerCase().includes("already confirmed")) {
+            alert("This booking is already confirmed. Refreshing the list.");
             await fetchData();
-        } catch (error) {
-            alert(
-                error.response?.data?.message ||
-                error.response?.data?.error ||
-                "Error confirming booking"
-            );
+            return;
         }
-    };
+
+        alert(message);
+    }
+};
 
     // Cancel or reject a booking
     const handleCancelBooking = async (id) => {
@@ -899,7 +923,7 @@ const AdminDashboard = () => {
                                                     onClick={() =>
                                                         handleConfirmBooking(
                                                             booking._id,
-                                                            "not_paid"
+                                                            "non_paid"
                                                         )
                                                     }
                                                     className="flex-1 min-w-[120px] bg-gray-100 text-gray-800 font-bold text-xs py-3 px-3 rounded-lg hover:bg-gray-200"
