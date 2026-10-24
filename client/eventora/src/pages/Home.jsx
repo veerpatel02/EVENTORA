@@ -381,6 +381,12 @@ const Home = () => {
                     </span>
 
                 </div>
+                <div>
+                    {/* Creator Credit */}
+                <p className="text-sm text-gray-600 mb-3">
+                 <span className="font-bold text-red-500">Created by Veer</span>
+                </p>
+                </div>
 
                 <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
                     The simplest, most dynamic way to manage, discover, and

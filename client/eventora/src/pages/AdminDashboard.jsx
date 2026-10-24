@@ -406,53 +406,6 @@ const AdminDashboard = () => {
             );
         }
     };
-    // const handleCreateEvent = async (e) => {
-    //     e.preventDefault();
-
-    //     const totalSeats = Number(formData.totalSeats);
-    //     const ticketPrice = Number(formData.ticketPrice);
-
-    //     if (
-    //         !Number.isFinite(totalSeats) ||
-    //         totalSeats <= 0 ||
-    //         !Number.isFinite(ticketPrice) ||
-    //         ticketPrice < 0
-    //     ) {
-    //         alert("Enter valid seats and a non-negative ticket price.");
-    //         return;
-    //     }
-
-    //     try {
-    //         await api.post(`${API_BASE}/events`, {
-    //             ...formData,
-    //             totalSeats,
-    //             availableSeats: totalSeats,
-    //             ticketPrice,
-    //         });
-
-    //         setShowEventForm(false);
-
-    //         setFormData({
-    //             title: "",
-    //             description: "",
-    //             date: "",
-    //             location: "",
-    //             category: "",
-    //             totalSeats: "",
-    //             ticketPrice: "",
-    //             image: "",
-    //         });
-
-    //         await fetchData();
-    //     } catch (error) {
-    //         alert(
-    //             error.response?.data?.message ||
-    //                 error.response?.data?.error ||
-    //                 "Error creating event"
-    //         );
-    //     }
-    // };
-
     // Delete an event
     const handleDeleteEvent = async (id) => {
         if (
@@ -476,22 +429,6 @@ const AdminDashboard = () => {
     };
 
     // Confirm a booking
-    // const handleConfirmBooking = async (id, paymentStatus) => {
-    //     try {
-    //         await api.put(
-    //             `${API_BASE}/bookings/${id}/confirm`,
-    //             { paymentStatus }
-    //         );
-
-    //         await fetchData();
-    //     } catch (error) {
-    //         alert(
-    //             error.response?.data?.message ||
-    //             error.response?.data?.error ||
-    //             "Error confirming booking"
-    //         );
-    //     }
-    // };
     const handleConfirmBooking = async (id, paymentStatus) => {
     try {
         await api.put(
@@ -737,16 +674,6 @@ const AdminDashboard = () => {
                         />
 
                         <input
-                            // type="url"
-                            // placeholder="Direct Image URL (optional)"
-                            // className="border px-4 py-3 rounded-lg md:col-span-2"
-                            // value={formData.image}
-                            // onChange={(e) =>
-                            //     setFormData({
-                            //         ...formData,
-                            //         image: e.target.value,
-                            //     })
-                            // }
                             required
                             type="url"
                             placeholder="Direct image URL"

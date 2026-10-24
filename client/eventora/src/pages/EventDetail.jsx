@@ -46,36 +46,6 @@ const EventDetail = () => {
         fatchEvent(); // Important: call the function
     }, [id]);
 
-    // const handleBooking = async () => {
-    //     if (!user) {
-    //         navigate('/login');
-    //         return;
-    //     }
-    //     if (!event?._id) {
-    //         setError("Event details are not available.");
-    //         return;
-    //     }
-    //     setBookingLoading(true);
-    //     setError('');
-    //     setSuccessMsg('');
-
-    //     try {
-    //         if (!showOTP) {
-    //             await api.post('/booking/sent-otp');
-    //             setShowOTP(true);
-    //             setSuccessMsg('OTP sent to your email. Please verify to confirm booking');
-    //         } else {
-    //             await api.post('/booking', { eventId: event._id, otp });
-    //             setSuccessMsg('Bookig requested! Awaiting admin confirmation.');
-    //             setShowOTP(false);
-    //             setEVent({ ...event, availabseats: event.availabseats - 1 });
-    //         }
-    //     } catch (error) {
-    //         setError(error.response?.data?.message || 'Booking failed');
-    //     } finally {
-    //         setBookingLoading(false);
-    //     }
-    // };
     const handleBooking = async () => {
     if (!user) {
         navigate("/login");
