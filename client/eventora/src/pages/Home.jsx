@@ -9,7 +9,7 @@ import {
     FaShieldAlt,
 } from 'react-icons/fa';
 import api from "../utils/axios.js";
-import Navbar from '../components/Navbar.jsx';
+
 
 const Home = () => {
     const [events, setEvents] = useState([]);
@@ -74,7 +74,6 @@ const Home = () => {
     };
 
     return (<>
-        <Navbar />
         <div className="flex flex-col min-h-screen">
 
             {/* Hero Section */}

@@ -7,9 +7,13 @@ import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
+import MainLayout from "./layouts/MainLayout";
 
 const router = createBrowserRouter([
-{
+  {
+    element: <MainLayout />,
+    children: [
+      {
   path:"/",
   element: <Home />
   
@@ -42,10 +46,13 @@ const router = createBrowserRouter([
   path:"/paymentfailed",
   element: <PaymentFailed />    
 }
-])
+    ]
+  }
+
+]);
 
 const App = () =>{
   return <RouterProvider router={router} />;
-}
+};
 
 export default App;
