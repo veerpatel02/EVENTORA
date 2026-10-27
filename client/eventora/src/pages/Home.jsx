@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     FaCalendarAlt,
     FaMapMarkerAlt,
@@ -16,7 +16,7 @@ const Home = () => {
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
+    const navigate = useNavigate()
     useEffect(() => {
         const controller = new AbortController();
 
@@ -231,7 +231,7 @@ const Home = () => {
                 /* Events Grid */
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                    {events.map((event) => {
+                    {events.slice(0, 3).map((event) => {
 
                         const seatPercentage = getSeatPercentage(
                             Number(event.availableSeats),
@@ -365,8 +365,29 @@ const Home = () => {
                             </div>
                         );
                     })}
+                    
                 </div>
+                
             )}
+            {/* Explore More Events Button */}
+                    {!loading && !error && events.length > 0 && (
+                        <div className="w-full mt-10 mb-12 flex flex-col items-center justify-center text-center">
+                            <p className="mb-5 text-gray-500 text-lg">
+                                Looking for more exciting events?
+                            </p>
+
+                            <Link
+                                to="/events"
+                                className="group inline-flex items-center justify-center gap-3 rounded-full bg-gray-900 px-10 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-gray-700 hover:shadow-xl"
+                            >
+                                Explore All Events
+
+                                <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">
+                                    →
+                                </span>
+                            </Link>
+                        </div>
+                    )}
 
             {/* Footer */}
             <footer className="mt-auto pt-16 pb-8 border-t border-gray-200 text-center">
@@ -382,9 +403,9 @@ const Home = () => {
                 </div>
                 <div>
                     {/* Creator Credit */}
-                <p className="text-sm text-gray-600 mb-3">
-                 <span className="font-bold text-red-500">Created by Veer</span>
-                </p>
+                    <p className="text-sm text-gray-600 mb-3">
+                        <span className="font-bold text-red-500">Created by Veer</span>
+                    </p>
                 </div>
 
                 <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
