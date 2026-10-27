@@ -19,19 +19,33 @@ const UserDashboard = () => {
     }, [user, navigate]);
 
     const fetchBookings = async () => {
-        try {
-            const { data } = await api.get(
-                "http://localhost:5000/api/v1/bookings/my"
-            );
-            setBookings(
-                Array.isArray(data) ? data : data.bookings || []
-            );
-        } catch (error) {
-            console.error('Error fetching bookings', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+        const { data } = await api.get(
+            "http://localhost:5000/api/v1/bookings/my"
+        );
+
+        const allBookings = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.bookings)
+                ? data.bookings
+                : [];
+
+        const filteredBookings = allBookings.filter(
+            (booking) =>
+                booking.eventId &&
+                booking.status !== "cancelled"
+        );
+
+        setBookings(filteredBookings);
+    } catch (error) {
+        console.error(
+            "Error fetching bookings:",
+            error.response?.data || error.message
+        );
+    } finally {
+        setLoading(false);
+    }
+};
 
     const cancelBooking = async (id) => {
         if (window.confirm('Are you sure you want to cancel this booking request?')) {
@@ -132,9 +146,6 @@ const UserDashboard = () => {
                     ))}
                 </div>
             )}
-            <div>
-                <button onClick={"/homepage"}>home page</button>
-            </div>
         </div>
 
     );

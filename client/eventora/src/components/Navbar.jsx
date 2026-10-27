@@ -5,6 +5,7 @@ import { FaTicketAlt } from 'react-icons/fa';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  console.log(user)
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -28,7 +29,7 @@ const Navbar = () => {
 
           {/* Events */}
           <Link
-            to="/"
+            to="/events"
             className="text-gray-200 hover:text-white transition"
           >
             Events
